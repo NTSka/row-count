@@ -7,10 +7,6 @@ OUTPUT_DIRECTORY := output
 OUTPUT_FILE := test-output.log
 TEMP_DIRECTORY := temp
 
-setup: ## Installing all service dependencies.
-	echo "Setup..."
-	GO111MODULE=on go mod vendor
-
 build: ## Build the executable file of service.
 	echo "Building..."
 	cd cmd/${SERVICE_NAME} && go build
@@ -22,6 +18,3 @@ run: build ## Run service with local config.
 test: build ## Run service with local config.
 	echo "Running..."
 	cd cmd/${SERVICE_NAME} && ./$(SERVICE_NAME) --input=../../${INPUT_DIRECTORY}/${TEST_INPUT} --limit=3 --output=../../${OUTPUT_DIRECTORY}/${OUTPUT_FILE} --temp=../../${TEMP_DIRECTORY}
-
-clear:
-	rm -r temp && mkdir temp
