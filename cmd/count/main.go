@@ -6,6 +6,7 @@ import (
 	"github.com/NTSka/row-count/processors"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 var (
@@ -62,6 +63,8 @@ func main() {
 
 	defer inputFile.Close()
 
+	t := time.Now()
+
 	// Split input file to the sorted temp files; Return count of temp files
 	fileCount, err := processors.SplitFile(inputFile, tempDir, lineDelimiter, *limit)
 	if err != nil {
@@ -88,4 +91,5 @@ func main() {
 	}
 
 	fmt.Printf("Success, you can see result here: %s \n", outputPath)
+	fmt.Println("Time: ", time.Now().Unix()-t.Unix())
 }

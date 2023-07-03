@@ -2,6 +2,7 @@ package processors
 
 import (
 	"bufio"
+	"emperror.dev/errors"
 	"fmt"
 	"github.com/NTSka/row-count/helpers"
 	"io"
@@ -20,19 +21,19 @@ func SplitFile(inputFile *os.File, targetDir string, delimiter byte, rowLimit in
 		// If EOF - finish last temp file and finish function
 		if err == io.EOF {
 			if err := helpers.WriteTemp(filepath.Join(targetDir, fmt.Sprintf("temp_%d", fileCount)), rows); err != nil {
-				return 0, err
+				return 0, errors.Wrap(err, "helpersWriteTemp")
 			}
 			break
 		}
 
 		if err != nil {
-			return 0, err
+			return 0, errors.Wrap(err, "inputReader.ReadBytes")
 		}
 
 		rows = append(rows, row)
 		if len(rows) == rowLimit {
 			if err := helpers.WriteTemp(filepath.Join(targetDir, fmt.Sprintf("temp_%d", fileCount)), rows); err != nil {
-				return 0, err
+				return 0, errors.Wrap(err, "helpers.WriteTemp")
 			}
 			fileCount++
 

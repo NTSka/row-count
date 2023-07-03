@@ -1,0 +1,15 @@
+version: '3'
+
+vars:
+  INPUT_FILE: ./input/test-input.log
+  INPUT_SHORT: ./input/test-input-short.log
+  OUTPUT_FILE: ./output/test-output.log
+  TEMP_DIRECTORY: ./temp
+
+tasks:
+  run:
+    cmds:
+      - go run ./cmd/count/main.go --input={{.INPUT_FILE}} --output=./{{.OUTPUT_FILE}} --temp={{.TEMP_DIRECTORY}} --limit=150
+  new:
+    cmds:
+      - go run ./cmd/v2/main.go --input={{.INPUT_FILE}} --output=./{{.OUTPUT_FILE}} --temp={{.TEMP_DIRECTORY}} --limit=150

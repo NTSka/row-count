@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 func Count(outPath, lastTempFileName string, delimiter byte) error {
@@ -32,7 +33,7 @@ func Count(outPath, lastTempFileName string, delimiter byte) error {
 				break
 			}
 
-			if _, err := outWriter.WriteString(fmt.Sprintf("%s\t%d\n", lastRow[0:len(lastRow)-1], count)); err != nil {
+			if _, err := outWriter.WriteString(fmt.Sprintf("%s\t%d\n", strings.TrimSpace(lastRow[0:len(lastRow)-1]), count)); err != nil {
 				return err
 			}
 
@@ -51,7 +52,7 @@ func Count(outPath, lastTempFileName string, delimiter byte) error {
 
 		if strRow != lastRow {
 			if lastRow != "" {
-				if _, err := outWriter.WriteString(fmt.Sprintf("%s\t%d\n", lastRow[0:len(lastRow)-1], count)); err != nil {
+				if _, err := outWriter.WriteString(fmt.Sprintf("%s\t%d\n", strings.TrimSpace(lastRow[0:len(lastRow)-1]), count)); err != nil {
 					return err
 				}
 
@@ -67,6 +68,7 @@ func Count(outPath, lastTempFileName string, delimiter byte) error {
 		}
 	}
 
+	tempFile.Close()
 	if err := os.Remove(lastTempFileName); err != nil {
 		return fmt.Errorf("error while removing temp file: %v", err)
 	}
